@@ -1,0 +1,10 @@
+node_modules/
+out/
+dist-mcp/
+release/
+data/
+*.log
+.claude/
+.impeccable/review/
+.impeccable/hook.cache.json
+.impeccable/config.local.json

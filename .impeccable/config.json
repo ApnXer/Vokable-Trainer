@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "border-accent-on-rounded",
+        "value": "*",
+        "files": [
+          "src/renderer/src/styles.css"
+        ],
+        "createdAt": "2026-11-02T19:08:53.275Z",
+        "reason": "agent: only remaining hit is .tab underline indicator (L187) on a tab button with no border-radius, the standard tab pattern of the pinned Quizlet layout; all card/button accent borders were removed"
+      }
+    ]
+  }
+}
