@@ -38,7 +38,8 @@ function splitCells(line: string, delim: string): string[] {
     else cur += c
   }
   out.push(cur)
-  return out.map((s) => s.trim())
+  // Schutz-Apostroph aus unserem CSV-Export ('=…, '-…) beim Wiedereinlesen entfernen
+  return out.map((s) => s.trim().replace(/^'(?=[=+\-@])/, ''))
 }
 
 /** Text → Zeilen aus Zellen. */

@@ -81,6 +81,14 @@ describe('Excel', () => {
     const sheets = excel.readSpreadsheet('t.xlsx', buf)
     expect(rowsToCards(sheets[0].rows).cards).toEqual([{ term: 'a', definition: 'b', example: 'c' }])
   })
+  it('CSV-Export entschärft Formeln und liest sie unverändert wieder ein', () => {
+    const cards = store.createSet({ title: 'F', cards: [{ term: '=HYPERLINK("x")', definition: '-ly' }] }).cards
+    const csv = excel.setToCsv({ cards })
+    expect(csv).toContain(`'-ly`)
+    expect(csv).not.toMatch(/(^|;)"?=/m)
+    const back = rowsToCards(excel.readSpreadsheet('f.csv', Buffer.from(csv, 'utf8'))[0].rows).cards
+    expect(back[0]).toEqual({ term: '=HYPERLINK("x")', definition: '-ly' })
+  })
   it('CSV mit Umlauten wird als UTF-8 gelesen', () => {
     const sheets = excel.readSpreadsheet('v.csv', Buffer.from('Begriff;Definition\nbeautiful;schön\n', 'utf8'))
     expect(rowsToCards(sheets[0].rows).cards[0].definition).toBe('schön')

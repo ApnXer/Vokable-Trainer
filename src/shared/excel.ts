@@ -32,7 +32,11 @@ export function setToXlsx(set: Pick<StudySet, 'title' | 'cards'>): Buffer {
 }
 
 export function setToCsv(set: Pick<StudySet, 'cards'>, delim = ';'): string {
-  const esc = (v: string) => (v.includes(delim) || /["\n\r]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v)
+  const esc = (raw: string) => {
+    // Formel-Injektion verhindern: Excel würde =, +, -, @ am Zellanfang als Formel ausführen
+    const v = /^[=+\-@\t\r]/.test(raw) ? `'${raw}` : raw
+    return v.includes(delim) || /["\n\r]/.test(v) ? `"${v.replace(/"/g, '""')}"` : v
+  }
   return '﻿' + rowsOf(set).map((r) => r.map(esc).join(delim)).join('\r\n')
 }
 
